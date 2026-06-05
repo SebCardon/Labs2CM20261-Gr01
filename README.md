@@ -1,8 +1,5 @@
 # Labs CM 2026-1 Grupo 01
 
-## Repositorio
-https://github.com/TuUsuario/Labs20261-Gr01
-
 ## Integrantes
 | Nombre |
 |Sebastian Cardona Guzmán|
