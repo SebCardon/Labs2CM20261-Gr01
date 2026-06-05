@@ -3,45 +3,40 @@ package co.edu.udea.compumovil.gr01_20261.labs20261_gr01.labs20261_gr01
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.work.*
+import co.edu.udea.compumovil.gr01_20261.lab2.data.worker.MessageSyncWorker
+import co.edu.udea.compumovil.gr01_20261.lab2.ui.navigation.AppNavigation
 import co.edu.udea.compumovil.gr01_20261.labs20261_gr01.labs20261_gr01.ui.theme.Labs20261Gr01Theme
+import java.util.concurrent.TimeUnit
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        scheduleMessageSync()
         setContent {
             Labs20261Gr01Theme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                AppNavigation()
             }
         }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+    private fun scheduleMessageSync() {
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Labs20261Gr01Theme {
-        Greeting("Android")
+        val syncRequest = PeriodicWorkRequestBuilder<MessageSyncWorker>(
+            15, TimeUnit.MINUTES
+        )
+            .setConstraints(constraints)
+            .build()
+
+        WorkManager.getInstance(applicationContext)
+            .enqueueUniquePeriodicWork(
+                "message_sync",
+                ExistingPeriodicWorkPolicy.REPLACE,
+                syncRequest
+            )
     }
 }

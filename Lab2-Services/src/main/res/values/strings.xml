@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">Labs20261-Gr01</string>
+    <string name="app_name">JetChat Lab2</string>
+    <string name="conversations">Conversaciones</string>
+    <string name="chat">Chat</string>
+    <string name="back">Atrás</string>
+    <string name="sync_info">Mensajes sincronizados automáticamente cada 15 min</string>
+    <string name="loading">Cargando...</string>
 </resources>

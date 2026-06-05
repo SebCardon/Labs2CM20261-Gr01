@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">JetChat Lab2</string>
+    <string name="conversations">Conversations</string>
+    <string name="chat">Chat</string>
+    <string name="back">Back</string>
+    <string name="sync_info">Messages automatically synced every 15 min</string>
+    <string name="loading">Loading...</string>
+</resources>
