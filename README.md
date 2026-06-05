@@ -1,7 +1,7 @@
 # Labs CM 2026-1 Grupo 01
 
 ## Repositorio
-[https://github.com/TuUsuario/Labs20261-Gr01](https://github.com/SebCardon/Labs2CM20261-Gr01.git)
+https://github.com/TuUsuario/Labs20261-Gr01
 
 ## Integrantes
 | Nombre |
