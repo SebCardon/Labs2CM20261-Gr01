@@ -8,7 +8,6 @@ val WaTeal = Color(0xFF128C7E)
 val WaLightGreen = Color(0xFF25D366)
 val WaChatBg = Color(0xFFE5DDD9)
 val WaReceivedBubble = Color(0xFFFFFFFF)
-val WaSentBubble = Color(0xFFDCF8C6)
 val WaTopBarText = Color(0xFFFFFFFF)
 val WaDivider = Color(0xFFE0E0E0)
 

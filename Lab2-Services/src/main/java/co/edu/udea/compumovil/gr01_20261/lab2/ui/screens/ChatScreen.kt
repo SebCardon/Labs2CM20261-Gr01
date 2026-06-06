@@ -6,20 +6,18 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import co.edu.udea.compumovil.gr01_20261.lab2.R
 import co.edu.udea.compumovil.gr01_20261.lab2.data.model.ChatMessage
 import co.edu.udea.compumovil.gr01_20261.lab2.ui.theme.WaChatBg
 import co.edu.udea.compumovil.gr01_20261.lab2.ui.theme.WaReceivedBubble
@@ -28,7 +26,7 @@ import co.edu.udea.compumovil.gr01_20261.lab2.ui.viewmodel.ChatViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatScreen(
-    conversationId: String,
+    @Suppress("UNUSED_PARAMETER") conversationId: String,
     viewModel: ChatViewModel = viewModel(),
     onBackClick: () -> Unit
 ) {
@@ -39,7 +37,7 @@ fun ChatScreen(
             TopAppBar(
                 title = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        val firstName = allMessages.firstOrNull()?.user ?: stringResource(R.string.chat)
+                        val firstName = allMessages.firstOrNull()?.user ?: "Chat"
                         AvatarCircle(
                             initial = if (firstName.isNotEmpty()) firstName.first().uppercaseChar().toString() else "?",
                             size = 36,
@@ -54,7 +52,7 @@ fun ChatScreen(
                                 color = MaterialTheme.colorScheme.onPrimary
                             )
                             Text(
-                                text = stringResource(R.string.sync_info),
+                                text = "Sincronizado cada 15 min",
                                 fontSize = 11.sp,
                                 color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
                             )
@@ -64,8 +62,8 @@ fun ChatScreen(
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back),
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Atrás",
                             tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }

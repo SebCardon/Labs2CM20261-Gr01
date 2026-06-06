@@ -12,7 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -20,7 +19,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import co.edu.udea.compumovil.gr01_20261.lab2.R
 import co.edu.udea.compumovil.gr01_20261.lab2.data.model.ChatMessage
 import co.edu.udea.compumovil.gr01_20261.lab2.ui.theme.WaDivider
 import co.edu.udea.compumovil.gr01_20261.lab2.ui.viewmodel.ChatViewModel
@@ -42,7 +40,7 @@ fun ConversationListScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = stringResource(R.string.conversations),
+                        text = "Conversaciones",
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp
                     )
