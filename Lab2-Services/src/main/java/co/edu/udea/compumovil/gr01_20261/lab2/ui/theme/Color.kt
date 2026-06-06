@@ -1,4 +1,4 @@
-package co.edu.udea.compumovil.gr01_20261.labs20261_gr01.labs20261_gr01.ui.theme
+package co.edu.udea.compumovil.gr01_20261.lab2.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

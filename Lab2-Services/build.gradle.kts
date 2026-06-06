@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "co.edu.udea.compumovil.gr01_20261.labs20261_gr01.labs20261_gr01"
+    namespace = "co.edu.udea.compumovil.gr01_20261.lab2"
     compileSdk {
         version = release(36) {
             minorApiLevel = 1
@@ -12,7 +12,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "co.edu.udea.compumovil.gr01_20261.labs20261_gr01.labs20261_gr01"
+        applicationId = "co.edu.udea.compumovil.gr01_20261.lab2"
         minSdk = 23
         targetSdk = 36
         versionCode = 1
@@ -41,6 +41,7 @@ android {
 
 dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
 
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")

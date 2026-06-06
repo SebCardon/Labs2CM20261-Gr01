@@ -13,11 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import co.edu.udea.compumovil.gr01_20261.labs20261_gr01.labs20261_gr01.R
+import co.edu.udea.compumovil.gr01_20261.lab2.R
 import co.edu.udea.compumovil.gr01_20261.lab2.data.model.ChatMessage
 import co.edu.udea.compumovil.gr01_20261.lab2.ui.viewmodel.ChatViewModel
 
@@ -54,6 +56,7 @@ fun ConversationListScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding)
+                    .semantics { contentDescription = "Lista de conversaciones" }
             ) {
                 items(messages) { message ->
                     ConversationItem(
@@ -76,7 +79,8 @@ fun ConversationItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .padding(16.dp),
+            .padding(16.dp)
+            .semantics { contentDescription = "Conversación de ${message.user}" },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(

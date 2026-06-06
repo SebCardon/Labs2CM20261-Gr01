@@ -17,8 +17,8 @@ class MessageSyncWorker(
         Log.d("MessageSyncWorker", "Iniciando sincronización...")
 
         return try {
-            withTimeout(10_000L) {  // ← timeout de 10 segundos
-                val repository = ChatRepository.getInstance()
+            withTimeout(10_000L) {
+                val repository = ChatRepository.getInstance(applicationContext)
                 repository.fetchAndStoreMessages()
             }
             Log.d("MessageSyncWorker", "Sincronización exitosa")
@@ -28,7 +28,7 @@ class MessageSyncWorker(
             Result.retry()
         } catch (e: Exception) {
             Log.e("MessageSyncWorker", "Error: ${e.message}")
-            Result.retry()
+            Result.failure()
         }
     }
 }
