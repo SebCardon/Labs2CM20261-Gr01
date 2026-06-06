@@ -4,24 +4,25 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import co.edu.udea.compumovil.gr01_20261.lab2.R
 import co.edu.udea.compumovil.gr01_20261.lab2.data.model.ChatMessage
+import co.edu.udea.compumovil.gr01_20261.lab2.ui.theme.WaChatBg
+import co.edu.udea.compumovil.gr01_20261.lab2.ui.theme.WaReceivedBubble
 import co.edu.udea.compumovil.gr01_20261.lab2.ui.viewmodel.ChatViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,26 +33,54 @@ fun ChatScreen(
     onBackClick: () -> Unit
 ) {
     val allMessages by viewModel.messages.collectAsState()
-    val chatMessages = allMessages.take(10)
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.chat)) },
+                title = {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        val firstName = allMessages.firstOrNull()?.user ?: stringResource(R.string.chat)
+                        AvatarCircle(
+                            initial = if (firstName.isNotEmpty()) firstName.first().uppercaseChar().toString() else "?",
+                            size = 36,
+                            backgroundColor = MaterialTheme.colorScheme.secondary
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Column {
+                            Text(
+                                text = firstName,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp,
+                                color = MaterialTheme.colorScheme.onPrimary
+                            )
+                            Text(
+                                text = stringResource(R.string.sync_info),
+                                fontSize = 11.sp,
+                                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
+                            )
+                        }
+                    }
+                },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.back),
+                            tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary
+                )
             )
         }
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(WaChatBg)
                 .padding(padding)
         ) {
             LazyColumn(
@@ -59,22 +88,13 @@ fun ChatScreen(
                     .weight(1f)
                     .semantics { contentDescription = "Lista de mensajes del chat" },
                 reverseLayout = true,
-                contentPadding = PaddingValues(16.dp)
+                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp)
             ) {
-                items(chatMessages.reversed()) { message ->
+                items(allMessages.reversed()) { message ->
                     MessageBubble(message = message)
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(4.dp))
                 }
             }
-
-            Text(
-                text = stringResource(R.string.sync_info),
-                style = MaterialTheme.typography.labelSmall,
-                color = Color.Gray,
-                modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 4.dp)
-                    .align(Alignment.CenterHorizontally)
-            )
         }
     }
 }
@@ -82,54 +102,57 @@ fun ChatScreen(
 @Composable
 fun MessageBubble(message: ChatMessage) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Start
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 4.dp),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.Bottom
     ) {
-        Box(
+        AvatarCircle(
+            initial = message.avatarInitial,
+            size = 32,
+            backgroundColor = MaterialTheme.colorScheme.secondary
+        )
+
+        Spacer(modifier = Modifier.width(6.dp))
+
+        Surface(
+            shape = RoundedCornerShape(
+                topStart = 2.dp,
+                topEnd = 12.dp,
+                bottomEnd = 12.dp,
+                bottomStart = 12.dp
+            ),
+            color = WaReceivedBubble,
+            shadowElevation = 1.dp,
             modifier = Modifier
-                .size(36.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.secondary),
-            contentAlignment = Alignment.Center
+                .widthIn(max = 280.dp)
+                .semantics { contentDescription = "Mensaje de ${message.user}: ${message.message}" }
         ) {
-            Text(
-                text = message.avatarInitial,
-                color = Color.White,
-                style = MaterialTheme.typography.labelMedium
-            )
-        }
-
-        Spacer(modifier = Modifier.width(8.dp))
-
-        Column {
-            Text(
-                text = message.user ?: "",
-                style = MaterialTheme.typography.labelSmall,
-                fontWeight = FontWeight.Bold
-            )
-            Surface(
-                shape = RoundedCornerShape(
-                    topStart = 0.dp,
-                    topEnd = 12.dp,
-                    bottomEnd = 12.dp,
-                    bottomStart = 12.dp
-                ),
-                color = MaterialTheme.colorScheme.surfaceVariant,
-                modifier = Modifier
-                    .widthIn(max = 280.dp)
-                    .semantics { contentDescription = "Mensaje de ${message.user}: ${message.message}" }
-            ) {
+            Column(modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)) {
                 Text(
-                    text = message.message ?: "",
-                    modifier = Modifier.padding(12.dp),
-                    style = MaterialTheme.typography.bodyMedium
+                    text = message.user,
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.secondary,
+                    fontSize = 12.sp
+                )
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(
+                    text = message.message,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color(0xFF111B21),
+                    fontSize = 14.sp
+                )
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(
+                    text = message.timestamp,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = Color(0xFF667781),
+                    fontSize = 11.sp,
+                    modifier = Modifier.align(Alignment.End)
                 )
             }
-            Text(
-                text = message.timestamp ?: "",
-                style = MaterialTheme.typography.labelSmall,
-                color = Color.Gray
-            )
         }
     }
 }
